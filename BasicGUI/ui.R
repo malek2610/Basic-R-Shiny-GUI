@@ -1,33 +1,49 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
+library(ggplot2)
 
-# Define UI for application that draws a histogram
-fluidPage(
-
+shinyUI(
+  fluidPage(
     # Application title
-    titlePanel("Basic R Shiny GUI"),
-
-    # Sidebar with a slider input for number of bins
+    titlePanel("Basic Graphical User Interface"),
+    
+    # Sidebar with options for data set
     sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
+      sidebarPanel(
+        h3("Select the order:"),
+        
+        selectizeInput(
+          "vore",
+          "Vore",
+          selected = "omni",
+          choices = levels(as.factor(msleep$vore))
         ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-            plotOutput("distPlot")
+        
+        br(),
+        
+        sliderInput(
+          "size",
+          "Size of points on graph",
+          min = 1,
+          max = 10,
+          value = 5,
+          step = 1
+        ),
+        
+        checkboxInput(
+          "concervation",
+          h4(
+            "Color code cnservation status", 
+            style = "color:red;",
+            FALSE
+          )
         )
-    )
+      ),
+      
+      mainPanel(
+        plotOutput("sleepPlot"),
+        textOutput("info"),
+        tableOutput("table")
+      )
+    ) 
+  )
 )
